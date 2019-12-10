@@ -32,25 +32,41 @@ function install_step {
 	pip install wheel
 
 	#################### Installation of GT4py  ####################
-	git clone git@github.com:twicki/gt4py.git -b fix
+	if [ -z ${GT4PY_BRANCH+x} ]; then
+ 		echo "GT4PT branch not set, using the default"
+		git clone git@github.com:twicki/gt4py.git -b fix
+	else
+		git clone git@github.com:twicki/gt4py.git -b ${GT4PY_BRANCH}
+	fi
 	pip install ./gt4py -v
 	python ./gt4py/setup.py install_gt_sources
 
 	# TODO: change to this once we have it merged to master
 	# git clone git@github.com:MeteoSwiss-APN/dawn.git
-	git clone git@github.com:egparedes/dawn.git -b add_python_bindings
+	if [ -z ${DAWN_BRANCH+x} ]; then
+ 		echo "dawn branch not set, using the default"
+		git clone git@github.com:egparedes/dawn.git -b add_python_bindings
+	else
+		git clone git@github.com:egparedes/dawn.git -b ${DAWN_BRANCH}
+	fi	
 	pip install -e ./dawn/dawn -v
 }
 
 
 base_dir=$(dirname "$(dirname "$(dirname "${BASEPATH_SCRIPT}")")")
-while getopts hci flag; do
+while getopts hcig:d: flag; do
   case $flag in
     h)
       help
       ;;
     c)
 		clear
+		;;
+	g)
+		GT4PY_BRANCH=$OPTARG
+		;;
+	d)
+		DAWN_BRANCH=$OPTARG
 		;;
     i)
 		install_step
