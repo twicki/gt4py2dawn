@@ -1,7 +1,6 @@
 #!/bin/bash
 
-echo $BASEPATH_SCRIPT
-# set -e
+set -e
 
 BASEPATH_SCRIPT="$(cd "$(dirname "${0}")"; pwd -P)/$(basename "${0}")"
 SCRIPT=`basename $0`
@@ -12,6 +11,7 @@ function help {
   echo -e "-h Shows this help"
   echo -e "-c clears the installed dependencies and the virtual environment"
   echo -e "-i installs all the dependencies and sets up a venv"
+  echo 
   exit 1
 }
 
@@ -41,26 +41,26 @@ function install_step {
 	pip install ./gt4py -v
 	python ./gt4py/setup.py install_gt_sources
 
-	# TODO: change to this once we have it merged to master
-	# git clone git@github.com:MeteoSwiss-APN/dawn.git
-	if [ -z ${DAWN_BRANCH+x} ]; then
- 		echo "dawn branch not set, using the default"
-		git clone git@github.com:egparedes/dawn.git -b add_python_bindings
-	else
-		git clone git@github.com:egparedes/dawn.git -b ${DAWN_BRANCH}
-	fi	
-	pip install -e ./dawn/dawn -v
+	# # TODO: change to this once we have it merged to master
+	# # git clone git@github.com:MeteoSwiss-APN/dawn.git
+	# if [ -z ${DAWN_BRANCH+x} ]; then
+ 	# 	echo "dawn branch not set, using the default"
+	# 	git clone git@github.com:egparedes/dawn.git -b add_python_bindings
+	# else
+	# 	git clone git@github.com:egparedes/dawn.git -b ${DAWN_BRANCH}
+	# fi	
+	# pip install -e ./dawn/dawn -v
 }
 
 
 base_dir=$(dirname "$(dirname "$(dirname "${BASEPATH_SCRIPT}")")")
-while getopts hcig:d: flag; do
+while getopts hcig:d:l flag; do
   case $flag in
     h)
       help
       ;;
     c)
-		clear
+		DO_CLEAR_STEP="ON"
 		;;
 	g)
 		GT4PY_BRANCH=$OPTARG
@@ -69,7 +69,10 @@ while getopts hcig:d: flag; do
 		DAWN_BRANCH=$OPTARG
 		;;
     i)
-		install_step
+		DO_INSTALL_STEP="ON"
+		;;
+	l)
+		LOCAL_SETUP="ON"
 		;;
     \?) #unrecognized option - show help
       echo -e \\n"Option -${BOLD}$OPTARG${OFF} not allowed."
@@ -77,6 +80,25 @@ while getopts hcig:d: flag; do
       ;;
   esac
 done
+
+if [ -z ${LOCAL_SETUP+x} ]; then
+	BASEPATH_SCRIPT=$(dirname "${0}")
+	source ${BASEPATH_SCRIPT}/machine_env.sh
+	source ${BASEPATH_SCRIPT}/env_${myhost}.sh
+
+	if [ -z ${myhost+x} ]; then
+	echo "myhost is unset"
+	exit 1
+	fi
+fi
+
+if [ -z ${DO_CLEAR_STEP+x} ]; then
+	clear
+fi
+
+if [ -z ${DO_INSTALL_STEP+x} ]; then
+	install_step
+fi
 
 source ${base_dir}/build/.project_venv/bin/activate
 
