@@ -10,6 +10,8 @@ function help {
   echo -e "Basic usage: $SCRIPT "\\n
   echo -e "The following switches are recognized. $OFF "
   echo -e "-h Shows this help"
+  echo -e "-c clears the installed dependencies and the virtual environment"
+  echo -e "-i installs all the dependencies and sets up a venv"
   exit 1
 }
 
@@ -25,14 +27,14 @@ function install_step {
 	# rm -rf gt4py dawn .project_venv
 
 	# set up the virtual environment
-	python3 -m venv .project_venv
+	python -m venv .project_venv
 	source .project_venv/bin/activate
 	pip install wheel
 
 	#################### Installation of GT4py  ####################
 	git clone git@github.com:twicki/gt4py.git -b fix
 	pip install ./gt4py -v
-	python3 gt4py/setup.py install_gt_sources
+	python ./gt4py/setup.py install_gt_sources
 
 	# TODO: change to this once we have it merged to master
 	# git clone git@github.com:MeteoSwiss-APN/dawn.git
@@ -62,5 +64,13 @@ done
 
 source ${base_dir}/build/.project_venv/bin/activate
 
+# Testing of the dawn installation
+# TODO: ask Enrique, seems strage
+
+# Testing of the GT4Py installation
+cd ${base_dir}/build/gt4py
+
+
+# test if the setup is ok and all the modules are loaded properly
 cd ${base_dir}/test
-pytest -v test.py
+pytest -v test_install.py test_integration.py
