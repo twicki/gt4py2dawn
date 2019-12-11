@@ -50,7 +50,7 @@ function install_step {
 	else
 		git clone git@github.com:twicki/gt4py.git -b ${GT4PY_BRANCH}
 	fi
-	pip install ./gt4py -v
+	pip install -e ./gt4py -v
 	python ./gt4py/setup.py install_gt_sources
 
 }
