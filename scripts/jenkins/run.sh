@@ -29,6 +29,7 @@ function install_step {
 	# set up the virtual environment
 	python -m venv .project_venv
 	source .project_venv/bin/activate
+	pip install --upgrade pip
 	pip install wheel
 
 	if [ -z ${DAWN_BRANCH+x} ]; then
