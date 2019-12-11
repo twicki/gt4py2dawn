@@ -96,10 +96,14 @@ if [ -z ${LOCAL_SETUP+x} ]; then
 fi
 
 if [ -z ${DO_CLEAR_STEP+x} ]; then
+	echo " no clear step specified"
+else
 	clear
 fi
 
 if [ -z ${DO_INSTALL_STEP+x} ]; then
+	echo " no install step required"
+else
 	install_step
 fi
 
@@ -114,4 +118,4 @@ cd ${base_dir}/build/gt4py
 
 # test if the setup is ok and all the modules are loaded properly
 cd ${base_dir}/test
-pytest -v test_install.py test_integration.py
+pytest -v test_install.py test_integration.py test_copy.py
