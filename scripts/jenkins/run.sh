@@ -31,6 +31,18 @@ function install_step {
 	source .project_venv/bin/activate
 	pip install wheel
 
+	if [ -z ${DAWN_BRANCH+x} ]; then
+ 		echo "dawn branch not set, using the default"
+		# TODO: change to this once we have it merged to master
+		# git clone git@github.com:MeteoSwiss-APN/dawn.git
+		git clone git@github.com:egparedes/dawn.git -b add_python_bindings
+	else
+		# TODO: change to this once we have it merged to master
+		# git clone git@github.com:MeteoSwiss-APN/dawn.git -b ${DAWN_BRANCH}
+		git clone git@github.com:egparedes/dawn.git -b ${DAWN_BRANCH}
+	fi	
+	pip install -e ./dawn/dawn -v
+
 	#################### Installation of GT4py  ####################
 	if [ -z ${GT4PY_BRANCH+x} ]; then
  		echo "GT4PT branch not set, using the default"
@@ -41,15 +53,6 @@ function install_step {
 	pip install ./gt4py -v
 	python ./gt4py/setup.py install_gt_sources
 
-	# # TODO: change to this once we have it merged to master
-	# # git clone git@github.com:MeteoSwiss-APN/dawn.git
-	# if [ -z ${DAWN_BRANCH+x} ]; then
- 	# 	echo "dawn branch not set, using the default"
-	# 	git clone git@github.com:egparedes/dawn.git -b add_python_bindings
-	# else
-	# 	git clone git@github.com:egparedes/dawn.git -b ${DAWN_BRANCH}
-	# fi	
-	# pip install -e ./dawn/dawn -v
 }
 
 

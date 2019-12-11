@@ -8,3 +8,5 @@ module swap PrgEnv-cray PrgEnv-gnu
 
 export CXX=`which g++`
 export CC=`which gcc`
+export TMPDIR=`pwd`/temp
+mkdir -p TMPDIR
