@@ -27,7 +27,7 @@ function install_step {
 	# rm -rf gt4py dawn .project_venv
 
 	# set up the virtual environment
-	python -m venv .project_venv
+	python3 -m venv .project_venv
 	source .project_venv/bin/activate
 	pip install --upgrade pip
 	pip install wheel
@@ -52,7 +52,7 @@ function install_step {
 		git clone git@github.com:twicki/gt4py.git -b ${GT4PY_BRANCH}
 	fi
 	pip install -e ./gt4py -v
-	python ./gt4py/setup.py install_gt_sources
+	python3 ./gt4py/setup.py install_gt_sources
 
 }
 
