@@ -10,5 +10,3 @@ export BOOST_ROOT=/project/c14/install/daint/boost/boost_1_67_0/
 
 export CXX=`which g++`
 export CC=`which gcc`
-export TMPDIR=`pwd`/temp
-mkdir -p $TMPDIR

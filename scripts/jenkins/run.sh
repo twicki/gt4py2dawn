@@ -85,6 +85,10 @@ while getopts hcig:d:l flag; do
   esac
 done
 
+# Create a temporary directory for pip
+export TMPDIR=`pwd`/temp
+mkdir -p $TMPDIR
+
 if [ -z ${LOCAL_SETUP+x} ]; then
 	BASEPATH_SCRIPT=$(dirname "${0}")
 	source ${BASEPATH_SCRIPT}/machine_env.sh
