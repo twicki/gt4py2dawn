@@ -86,7 +86,7 @@ while getopts hcig:d:l flag; do
 done
 
 # Create a temporary directory for pip
-export TMPDIR=`pwd`/temp
+export TMPDIR=${base_dir}/temp
 mkdir -p $TMPDIR
 
 if [ -z ${LOCAL_SETUP+x} ]; then
@@ -124,3 +124,6 @@ cd ${base_dir}/build/gt4py
 # test if the setup is ok and all the modules are loaded properly
 cd ${base_dir}/test
 pytest -v test_install.py test_integration.py test_copy.py
+
+
+rm -rf ${TMPDIR}
