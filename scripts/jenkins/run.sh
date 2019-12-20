@@ -118,10 +118,13 @@ fi
 source ${base_dir}/build/.project_venv/bin/activate
 
 # Testing of the dawn installation
-# TODO: ask Enrique, seems strage
+cd ${base_dir}/build/dawn/examples/python
+bash run.sh
+pytest -v ${base_dir}/build/dawn/test/unit-test/test_dawn4py/
 
 # Testing of the GT4Py installation
 cd ${base_dir}/build/gt4py
+# currently broken, will come later
 
 
 # test if the setup is ok and all the modules are loaded properly
