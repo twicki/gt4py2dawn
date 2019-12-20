@@ -52,7 +52,9 @@ function install_step {
 		git clone git@github.com:twicki/gt4py.git -b ${GT4PY_BRANCH}
 	fi
 	pip install -e ./gt4py -v
-	python3 ./gt4py/setup.py install_gt_sources
+	mkdir -p ${base_dir}/build/gt4py/src/gt4py/_external_src/
+	git clone --depth 1 -b release_v1.1 https://github.com/GridTools/gridtools.git ${base_dir}/build/gt4py/src/gt4py/_external_src/gridtools
+	# python3 ./gt4py/setup.py install_gt_sources
 
 }
 
