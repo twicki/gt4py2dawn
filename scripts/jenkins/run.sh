@@ -23,14 +23,12 @@ function clear {
 function install_step {
 	mkdir -p ${base_dir}/build
 	cd ${base_dir}/build
-	#################### cleanup  ####################
-	# rm -rf gt4py dawn .project_venv
 
 	# set up the virtual environment
-	python3 -m venv .project_venv
-	source .project_venv/bin/activate
-	pip install --upgrade pip
-	pip install wheel
+	python -m venv dawn_venv
+	source dawn_venv/bin/activate
+	python -m pip install --upgrade pip
+	python -m pip install wheel
 
 	if [ -z ${DAWN_BRANCH+x} ]; then
  		echo "dawn branch not set, using the default"
@@ -42,7 +40,7 @@ function install_step {
 		# git clone git@github.com:MeteoSwiss-APN/dawn.git -b ${DAWN_BRANCH}
 		git clone git@github.com:egparedes/dawn.git -b ${DAWN_BRANCH}
 	fi	
-	pip install -e ./dawn/dawn -v
+	python -m pip install -e ./dawn/dawn -v
 
 	#################### Installation of GT4py  ####################
 	if [ -z ${GT4PY_BRANCH+x} ]; then
@@ -51,7 +49,7 @@ function install_step {
 	else
 		git clone git@github.com:twicki/gt4py.git -b ${GT4PY_BRANCH}
 	fi
-	pip install -e ./gt4py -v
+	python -m pip install -e ./gt4py -v
 	# jenkins can't do this and it's unclear why. This is why we do it manually here
 	# python3 ./gt4py/setup.py install_gt_sources
 	mkdir -p ${base_dir}/build/gt4py/src/gt4py/_external_src/
@@ -115,12 +113,12 @@ else
 	install_step
 fi
 
-source ${base_dir}/build/.project_venv/bin/activate
+source ${base_dir}/build/dawn_venv/bin/activate
 
 # Testing of the dawn installation
 cd ${base_dir}/build/dawn/examples/python
 bash run.sh
-pytest -v ${base_dir}/build/dawn/test/unit-test/test_dawn4py/
+python -m pytest -v ${base_dir}/build/dawn/test/unit-test/test_dawn4py/
 
 # Testing of the GT4Py installation
 cd ${base_dir}/build/gt4py
@@ -129,7 +127,7 @@ cd ${base_dir}/build/gt4py
 
 # test if the setup is ok and all the modules are loaded properly
 cd ${base_dir}/test
-pytest -v test_install.py test_integration.py test_copy.py
+python -m pytest -v test_install.py test_integration.py test_copy.py
 
 
 rm -rf ${TMPDIR}
