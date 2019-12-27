@@ -118,7 +118,7 @@ source ${base_dir}/build/dawn_venv/bin/activate
 # Testing of the dawn installation
 cd ${base_dir}/build/dawn/dawn/examples/python
 bash run.sh
-python -m pytest -v ${base_dir}/build/dawn/test/unit-test/test_dawn4py/
+python -m pytest -v ${base_dir}/build/dawn/dawn/test/unit-test/test_dawn4py/
 
 # Testing of the GT4Py installation
 cd ${base_dir}/build/gt4py
