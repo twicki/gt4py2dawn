@@ -32,13 +32,9 @@ function install_step {
 
 	if [ -z ${DAWN_BRANCH+x} ]; then
  		echo "dawn branch not set, using the default"
-		# TODO: change to this once we have it merged to master
 		git clone git@github.com:MeteoSwiss-APN/dawn.git
-		# git clone git@github.com:egparedes/dawn.git -b add_python_bindings
 	else
-		# TODO: change to this once we have it merged to master
-		# git clone git@github.com:MeteoSwiss-APN/dawn.git -b ${DAWN_BRANCH}
-		git clone git@github.com:egparedes/dawn.git -b ${DAWN_BRANCH}
+		git clone git@github.com:MeteoSwiss-APN/dawn.git -b ${DAWN_BRANCH}
 	fi	
 	python -m pip install -e ./dawn/dawn -v
 
@@ -51,7 +47,7 @@ function install_step {
 	fi
 	python -m pip install -e ./gt4py -v
 	# jenkins can't do this and it's unclear why. This is why we do it manually here
-	# python3 ./gt4py/setup.py install_gt_sources
+	# python ./gt4py/setup.py install_gt_sources
 	mkdir -p ${base_dir}/build/gt4py/src/gt4py/_external_src/
 	git clone --depth 1 -b release_v1.1 https://github.com/GridTools/gridtools.git ${base_dir}/build/gt4py/src/gt4py/_external_src/gridtools
 
