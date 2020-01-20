@@ -34,7 +34,8 @@ function install_step {
  		echo "dawn branch not set, using the default"
 		git clone git@github.com:MeteoSwiss-APN/dawn.git
 	else
-		git clone git@github.com:MeteoSwiss-APN/dawn.git -b ${DAWN_BRANCH}
+		# git clone git@github.com:MeteoSwiss-APN/dawn.git -b ${DAWN_BRANCH}
+		git clone git@github.com:twicki/dawn.git -b ${DAWN_BRANCH}
 	fi	
 	python -m pip install -e ./dawn/dawn -v
 
