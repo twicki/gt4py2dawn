@@ -88,7 +88,7 @@ if [ -z ${LOCAL_SETUP+x} ]; then
 	BASEPATH_SCRIPT=$(dirname "${0}")
 	source ${BASEPATH_SCRIPT}/machine_env.sh
 	source ${BASEPATH_SCRIPT}/env_${myhost}.sh
-	workdir=/dev/shm/tmp_gt4py2dawn
+	workdir=${base_dir}/../tmp
 	cp -r ${base_dir} ${workdir}
 
 	if [ -z ${myhost+x} ]; then
