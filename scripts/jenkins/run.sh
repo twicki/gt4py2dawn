@@ -83,20 +83,25 @@ while getopts hcig:d:l flag; do
   esac
 done
 
-# Create a temporary directory for pip
-export TMPDIR=${base_dir}/temp
-mkdir -p $TMPDIR
 
 if [ -z ${LOCAL_SETUP+x} ]; then
 	BASEPATH_SCRIPT=$(dirname "${0}")
 	source ${BASEPATH_SCRIPT}/machine_env.sh
 	source ${BASEPATH_SCRIPT}/env_${myhost}.sh
+	workdir=/dev/shm/tmp_gt4py2dawn
+	cp -r ${base_dir} ${workdir}
 
 	if [ -z ${myhost+x} ]; then
 	echo "myhost is unset"
 	exit 1
 	fi
+else
+	workdir=${base_dir}
 fi
+
+# Create a temporary directory for pip
+export TMPDIR=${workdir}/temp
+mkdir -p $TMPDIR
 
 if [ -z ${DO_CLEAR_STEP+x} ]; then
 	echo " no clear step specified"
@@ -110,21 +115,24 @@ else
 	install_step
 fi
 
-source ${base_dir}/build/dawn_venv/bin/activate
+source ${workdir}/build/dawn_venv/bin/activate
 
 # Testing of the dawn installation
-cd ${base_dir}/build/dawn/dawn/examples/python
+cd ${workdir}/build/dawn/dawn/examples/python
 bash run.sh
-python -m pytest -v ${base_dir}/build/dawn/dawn/test/unit-test/test_dawn4py/
+python -m pytest -v ${workdir}/build/dawn/dawn/test/unit-test/test_dawn4py/
 
 # Testing of the GT4Py installation
-cd ${base_dir}/build/gt4py
+cd ${workdir}/build/gt4py
 # currently broken, will come later
 
 
 # test if the setup is ok and all the modules are loaded properly
-cd ${base_dir}/test
+cd ${workdir}/test
 python -m pytest -v test_install.py test_integration.py test_copy.py
 
 
 rm -rf ${TMPDIR}
+if [ -z ${LOCAL_SETUP+x} ]; then
+	rm -rf ${workdir}
+fi
