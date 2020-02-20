@@ -116,7 +116,7 @@ source ${base_dir}/build/dawn_venv/bin/activate
 # Testing of the dawn installation
 cd ${base_dir}/build/dawn/dawn/examples/python
 python copy_stencil.py
-python -m pytest -v ${base_dir}/build/dawn/dawn/test/unit-test/test_dawn4py/
+python -m pytest -v ${base_dir}/build/dawn/dawn/test/unit-test/dawn4py-tests/
 
 # Testing of the GT4Py installation
 cd ${base_dir}/build/gt4py
