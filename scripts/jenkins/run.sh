@@ -41,7 +41,7 @@ function install_step {
 	#################### Installation of GT4py  ####################
 	if [ -z ${GT4PY_BRANCH+x} ]; then
  		echo "GT4PT branch not set, using the default"
-		git clone git@github.com:twicki/gt4py.git -b dawn-integration
+		git clone git@github.com:twicki/gt4py.git -b new-gt4py
 	else
 		git clone git@github.com:twicki/gt4py.git -b ${GT4PY_BRANCH}
 	fi
