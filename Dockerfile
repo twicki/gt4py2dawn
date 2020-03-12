@@ -1,4 +1,4 @@
-FROM jdahm/dawn-gcc9-env
+FROM gtclang/dawn-env-ubuntu19.10
 RUN git clone --depth 1 https://github.com/MeteoSwiss-APN/dawn.git /usr/src/dawn
 RUN python -m pip install /usr/src/dawn/dawn
 RUN git clone --depth 1 -b fv3_validation https://github.com/eddie-c-davis/gt4py.git /usr/src/gt4py
